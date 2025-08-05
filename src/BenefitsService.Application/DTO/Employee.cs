@@ -14,7 +14,9 @@ namespace BenefitsService.Application.DTO
         public required string LastName { get; set; }
         public required DateOnly DateOfBirth { get; set; }
         public int AnnualGrossSalary { get; set; }
-        public double NetBiweeklyPay { get; set; }
+        public decimal NetSalary { get; set; }
+        public decimal NetMonthlyPay { get; set; }
+        public decimal NetBiweeklyPay { get; set; }
         public IEnumerable<Dependent>? Dependents { get; set; }
 
     }

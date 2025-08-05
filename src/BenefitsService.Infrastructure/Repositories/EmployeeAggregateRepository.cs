@@ -15,12 +15,11 @@ namespace BenefitsService.Infrastructure.Repositories
     {
         public async Task<EmployeeAggregate?> GetEmployeeWithDependentsAsync(Guid employeeId)
         {
-            var employee = await _dbContext.Employees
+            var result = await _dbContext.Employees
                 .Include(employee => employee.Dependents)
-                .ThenInclude(dependent => dependent.Relationship)
                 .FirstOrDefaultAsync(employee => employee.Id == employeeId);
 
-            return employee;
+            return result;
         }
     }
 }

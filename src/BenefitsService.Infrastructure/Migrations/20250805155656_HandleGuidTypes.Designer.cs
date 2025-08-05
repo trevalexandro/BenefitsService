@@ -3,6 +3,7 @@ using System;
 using BenefitsService.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BenefitsService.Infrastructure.Migrations
 {
     [DbContext(typeof(BenefitsServiceContext))]
-    partial class BenefitsServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20250805155656_HandleGuidTypes")]
+    partial class HandleGuidTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -63,7 +66,7 @@ namespace BenefitsService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Relationship")
+                    b.Property<string>("RelationshipId")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -71,7 +74,24 @@ namespace BenefitsService.Infrastructure.Migrations
 
                     b.HasIndex("ParentId");
 
+                    b.HasIndex("RelationshipId");
+
                     b.ToTable("Dependents");
+                });
+
+            modelBuilder.Entity("BenefitsService.Domain.Entities.DependentRelationship", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DependentRelationships");
                 });
 
             modelBuilder.Entity("BenefitsService.Domain.Entities.Dependent", b =>
@@ -82,7 +102,15 @@ namespace BenefitsService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BenefitsService.Domain.Entities.DependentRelationship", "Relationship")
+                        .WithMany()
+                        .HasForeignKey("RelationshipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Parent");
+
+                    b.Navigation("Relationship");
                 });
 
             modelBuilder.Entity("BenefitsService.Domain.Aggregates.EmployeeAggregate", b =>

@@ -14,6 +14,20 @@ namespace BenefitsService.Infrastructure
     {
         public required DbSet<EmployeeAggregate> Employees { get; set; }
         public required DbSet<Dependent> Dependents { get; set; }
-        public required DbSet<DependentRelationship> DependentRelationships { get; set; }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder
+                .Properties<Guid>()
+                .HaveConversion<string>()
+                .HaveColumnType("TEXT");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Dependent>()
+                .Property(dependent => dependent.Relationship)
+                .HasConversion<string>(); // Stores enum values as their string names
+        }
     }
 }

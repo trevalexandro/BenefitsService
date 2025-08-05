@@ -8,9 +8,9 @@ namespace BenefitsService.Domain.Entities
 {
     public class RootEntity : BaseEntity
     {
-        public virtual bool ValidateEntity()
+        public virtual (bool Valid, string Error) ValidateEntity()
         {
-            return true;
+            return (true, string.Empty);
         }
     }
 }

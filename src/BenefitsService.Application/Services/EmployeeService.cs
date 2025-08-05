@@ -11,11 +11,16 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using BenefitsService.Application.Extensions;
+using BenefitsService.Domain.Enums;
 
 namespace BenefitsService.Application.Services
 {
     public class EmployeeService(IEmployeeAggregateRepository _dataRepository) : IEmployeeService
     {
+        private const int DefaultPageSize = 10;
+        private const int DefaultOffset = 0;
+
         public async Task<ApiResponse<Employee>> GetEmployeeByIdAsync(Guid id)
         {
             var employeeEntity = await _dataRepository.GetEmployeeWithDependentsAsync(id);
@@ -24,8 +29,9 @@ namespace BenefitsService.Application.Services
                 return new NotFoundApiResponse<Employee>();
             }
             
-            var employee = employeeEntity.Adapt<Employee>();
-            employee.Dependents = [.. employeeEntity.Dependents.Select(dependent => dependent.Adapt<Dependent>())];
+            var employee = employeeEntity.ToFullDto();
+            var dependents = employeeEntity.Dependents.ToList().Select(dependent => dependent.ToDto());
+            employee.Dependents = [.. dependents];
             var response = new ApiResponse<Employee>
             {
                 Data = employee
@@ -34,11 +40,12 @@ namespace BenefitsService.Application.Services
             return response;
         }
 
-        public async Task<ApiResponse<IEnumerable<Employee>>> GetEmployeesAsync(int pageSize = 10, int offset = 0)
+        public async Task<ApiResponse<IEnumerable<Employee>>> GetEmployeesAsync(int? pageSize, int? offset)
         {
             int totalCount = await _dataRepository.CountAsync<EmployeeAggregate>();
-            var employeeEntities = await _dataRepository.GetAllAsync<EmployeeAggregate>(pageSize, offset);
-            var employeeDtos = employeeEntities.Select(entity => entity.Adapt<Employee>());
+            var employeeEntities = await _dataRepository.GetAllAsync<EmployeeAggregate>(pageSize ?? DefaultPageSize,
+                offset ?? DefaultOffset);
+            var employeeDtos = employeeEntities.Select(entity => entity.ToDtoWithoutNetPay());
             var response = new ApiResponse<IEnumerable<Employee>>
             {
                 Data = employeeDtos,
@@ -47,22 +54,40 @@ namespace BenefitsService.Application.Services
             return response;
         }
 
-        public async Task<ApiResponse<Employee>> UpdateEmployeeAsync(Employee employee)
+        public async Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, Dependent dependent)
         {
-            var employeeEntity = await _dataRepository.GetAsync<EmployeeAggregate>(employee.Id.GetValueOrDefault());
+            var employeeEntity = await _dataRepository.GetEmployeeWithDependentsAsync(employeeId);
             if (employeeEntity == null)
             {
                 return new NotFoundApiResponse<Employee>();
             }
 
-            employeeEntity.FirstName = employee.FirstName;
-            employeeEntity.LastName = employee.LastName;
-            employeeEntity.DateOfBirth = employee.DateOfBirth;
+            if (!Enum.TryParse<Relationship>(dependent.Relationship, out var relationship))
+            {
+                return new BadRequestApiResponse<Employee>
+                {
+                    Error = "Invalid relationship for new dependent"
+                };
+            }
+
+            var dependentEntity = dependent.ToEntity(employeeEntity, relationship);
+            employeeEntity.Dependents.Add(dependentEntity);
+            (bool Valid, string Error) = employeeEntity.ValidateEntity();
+            if (!Valid)
+            {
+                return new BadRequestApiResponse<Employee>
+                {
+                    Error = Error
+                };
+            }
 
             await _dataRepository.SaveChangesAsync(employeeEntity);
+            var result = employeeEntity.ToFullDto();
             return new ApiResponse<Employee>
             {
-                Data = employee
+                Data = result,
+                Success = true,
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using BenefitsService.Domain.Aggregates;
+using BenefitsService.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BenefitsService.Domain.Entities
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public int Age { get; set; }
-        public required DependentRelationship Relationship { get; set; }
+        public required int Age { get; set; }
+        public required Relationship Relationship { get; set; }
     }
 }

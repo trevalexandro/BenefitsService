@@ -14,6 +14,6 @@ namespace BenefitsService.Domain.Interfaces
         Task<TEntity?> GetAsync<TEntity>(Guid id) where TEntity : BaseEntity;
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(int pageSize, int offset) where TEntity : BaseEntity;
         Task<int> CountAsync<TEntity>() where TEntity : BaseEntity;
-        bool ValidateEntity<TEntity>(TEntity entity) where TEntity : RootEntity;
+        (bool Valid, string Error) ValidateEntity<TEntity>(TEntity entity) where TEntity : RootEntity;
     }
 }

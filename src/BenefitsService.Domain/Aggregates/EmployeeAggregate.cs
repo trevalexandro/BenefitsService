@@ -1,4 +1,5 @@
 ﻿using BenefitsService.Domain.Entities;
+using BenefitsService.Domain.Enums;
 using BenefitsService.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace BenefitsService.Domain.Aggregates
     {
         public const string SpouseDependentName = "Spouse";
         public const string DomesticPartnerDependentName = "Domestic Partner";
-        public const int BaseBenefitsDeduction = 500;
-        public const int BaseDependentDeduction = 300;
+        public const int BaseBenefitsDeduction = 1000;
+        public const int BaseDependentDeduction = 600;
         public const int OlderDependentDeductionMinimumAge = 50;
         public const int OlderDependentDeduction = 200;
         public const int HighEarnerDeductionMinimumSalary = 80000;
-        public const double HighEarnerDeductionPercentage = 0.02;
+        public const decimal HighEarnerDeductionPercentage = 0.02M;
 
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
@@ -25,40 +26,39 @@ namespace BenefitsService.Domain.Aggregates
         public int AnnualGrossSalary { get; set; }
         public ICollection<Dependent> Dependents { get; set; } = [];
 
-        public override bool ValidateEntity()
+        public override (bool Valid, string Error) ValidateEntity()
         {
-            var partnerDependents = Dependents.Where(dependent => dependent.Relationship.Name == SpouseDependentName ||
-                dependent.Relationship.Name == DomesticPartnerDependentName);
+            var partnerDependents = Dependents.Where(dependent => Enum.GetName(dependent.Relationship) == 
+                SpouseDependentName || Enum.GetName(dependent.Relationship) == DomesticPartnerDependentName);
             if (partnerDependents.Count() > 1)
             {
-                return false; // Only one spouse or domestic partner is allowed
+                return (false, "Employees can only have one spouse OR one domestic partner");
             }
 
             return base.ValidateEntity();
         }
 
-        public double CalculateNetPaycheck()
+        public decimal CalculateNetSalary()
         {
-            double deductionsTotal = BaseBenefitsDeduction;
-
+            decimal deductionsTotal = BaseBenefitsDeduction * 12;
             if (AnnualGrossSalary > HighEarnerDeductionMinimumSalary)
             {
-                deductionsTotal += (AnnualGrossSalary * HighEarnerDeductionPercentage); // Additional deductions for high earners
+                decimal highEarnerDeduction = (AnnualGrossSalary * HighEarnerDeductionPercentage);
+                deductionsTotal += highEarnerDeduction;
             }
 
             foreach (var dependent in Dependents)
             {
-                int dependentsDeductions = BaseDependentDeduction;
+                int dependentsDeductions = BaseDependentDeduction * 12;
                 if (dependent.Age > OlderDependentDeductionMinimumAge)
                 {
-                    dependentsDeductions += OlderDependentDeduction;
+                    dependentsDeductions += OlderDependentDeduction * 12;
                 }
 
                 deductionsTotal += dependentsDeductions;
             }
 
-            double biweeklySalary = AnnualGrossSalary / 26;
-            double netPaycheck = biweeklySalary - deductionsTotal;
+            decimal netPaycheck = AnnualGrossSalary - deductionsTotal;
             return netPaycheck;
         }
     }

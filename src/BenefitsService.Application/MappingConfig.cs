@@ -16,12 +16,12 @@ namespace BenefitsService.Application
         {
             var config = new TypeAdapterConfig();
 
-            config.NewConfig<Entities.Dependent, Dependent>()
+            /*config.NewConfig<Entities.Dependent, Dependent>()
                 .Map(dest => dest.Id, src => src.Id)
                 .Map(dest => dest.FirstName, src => src.FirstName)
                 .Map(dest => dest.LastName, src => src.LastName)
                 .Map(dest => dest.Age, src => src.Age)
-                .TwoWays();
+                .TwoWays();*/
 
 
             config.NewConfig<Aggregates.EmployeeAggregate, Employee>()
@@ -30,6 +30,7 @@ namespace BenefitsService.Application
                 .Map(src => src.LastName, dest => dest.LastName)
                 .Map(src => src.DateOfBirth, dest => dest.DateOfBirth)
                 .Map(dest => dest.AnnualGrossSalary, src => src.AnnualGrossSalary)
+                .Ignore(dest => dest.Dependents)
                 .TwoWays();
 
             return config;

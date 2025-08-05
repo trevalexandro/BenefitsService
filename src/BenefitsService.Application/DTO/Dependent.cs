@@ -15,5 +15,6 @@ namespace BenefitsService.Application.DTO
         public required string LastName { get; set; }
         public int Age { get; set; }
         public required string Relationship { get; set; }
+        public Guid ParentId { get; set; }
     }
 }

@@ -35,13 +35,13 @@ namespace BenefitsService.Infrastructure.Repositories
 
         public async Task<Guid?> SaveChangesAsync<TEntity>(TEntity entity) where TEntity : RootEntity
         {
-            if (!ValidateEntity(entity))
+            if (!ValidateEntity(entity).Valid)
             {
                 return null;
             }
 
             var dbSet = _dbContext.Set<TEntity>();
-            if (entity.Id == null)
+            if (entity.Id == default)
             {
                 var result = await dbSet.AddAsync(entity);
                 await _dbContext.SaveChangesAsync();
@@ -59,7 +59,7 @@ namespace BenefitsService.Infrastructure.Repositories
             return existingEntity.Id;
         }
 
-        public bool ValidateEntity<TEntity>(TEntity entity) where TEntity : RootEntity
+        public (bool Valid, string Error) ValidateEntity<TEntity>(TEntity entity) where TEntity : RootEntity
         {
             return entity.ValidateEntity();
         }

@@ -41,9 +41,11 @@ cd BenefitsService/src/BenefitsService.API
 ```
 
 2. Run the API:
+
 `dotnet run`
 
 3. Open your browser and navigate to:
+
 https://localhost:7204/swagger to explore and test the API using Swagger UI.
 
 🧪 Running Tests
@@ -69,7 +71,11 @@ xUnit + Moq (for testing)
 Domain-Driven Design (DDD)
 
 📂 Example Endpoints
+
 Endpoint	Method	Description
+
 /api/v1/employees	GET	Get list of employees
+
 /api/v1/employees/{id}	GET	Get dependents, deductions, and net pay for a specific employee
+
 /api/v1/employees/{id}/dependents	POST	Add a new dependent

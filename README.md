@@ -48,6 +48,7 @@ cd BenefitsService/src/BenefitsService.API
 
 https://localhost:7204/swagger to explore and test the API using Swagger UI.
 
+
 🧪 Running Tests
 Unit tests are located in the BenefitsService.Tests project.
 
@@ -59,7 +60,9 @@ cd BenefitsService.Tests
 dotnet test
 ```
 
+
 🔍 Technologies Used
+
 .NET 9
 
 Entity Framework Core (SQLite provider)
@@ -69,6 +72,7 @@ Swagger/Swashbuckle
 xUnit + Moq (for testing)
 
 Domain-Driven Design (DDD)
+
 
 📂 Example Endpoints
 

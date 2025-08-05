@@ -24,11 +24,12 @@ namespace BenefitsService.Application.Extensions
             };
         }
 
-        public static Entities.Dependent ToEntity(this Dependent dto, EmployeeAggregate parent, Relationship relationship)
+        public static Entities.Dependent ToEntity(this NewDependent dto, EmployeeAggregate parent, 
+            Relationship relationship)
         {
             return new Entities.Dependent
             {
-                Id = dto.Id ?? default,
+                Id = default,
                 Age = dto.Age,
                 Relationship = relationship,
                 FirstName = dto.FirstName,

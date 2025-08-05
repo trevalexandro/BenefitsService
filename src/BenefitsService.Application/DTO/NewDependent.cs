@@ -1,16 +1,12 @@
-﻿using BenefitsService.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Aggregates = BenefitsService.Domain.Aggregates;
-using Entities = BenefitsService.Domain.Entities;
 
 namespace BenefitsService.Application.DTO
 {
-    public class Dependent : BaseDTO
+    public class NewDependent
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }

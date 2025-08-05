@@ -30,6 +30,7 @@ namespace BenefitsService.Application.Extensions
             dto.NetSalary = entity.CalculateNetSalary();
             dto.NetMonthlyPay = dto.NetSalary / 12;
             dto.NetBiweeklyPay = dto.NetMonthlyPay / 2;
+            dto.Dependents = entity.Dependents.ToList().Select(dependent => dependent.ToDto());
             return dto;
         }
 
@@ -37,7 +38,7 @@ namespace BenefitsService.Application.Extensions
         {
             return new EmployeeAggregate
             {
-                Id = dto.Id ?? default,
+                Id = dto.Id,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 DateOfBirth = dto.DateOfBirth,

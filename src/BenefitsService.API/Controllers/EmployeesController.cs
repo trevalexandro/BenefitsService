@@ -17,7 +17,7 @@ namespace BenefitsService.API.Controllers
             try
             {
                 var response = await _employeeService.GetEmployeesAsync(pageSize, offset);
-                return Ok(response);
+                return StatusCode((int)response.StatusCode, response);
             }
             catch(Exception ex)
             {
@@ -33,7 +33,7 @@ namespace BenefitsService.API.Controllers
             try
             {
                 var response = await _employeeService.GetEmployeeByIdAsync(id);
-                return Ok(response);
+                return StatusCode((int)response.StatusCode, response);
             }
             catch(Exception ex)
             {
@@ -44,12 +44,12 @@ namespace BenefitsService.API.Controllers
         }
 
         [HttpPost("{id:guid}/dependents")]
-        public async Task<IActionResult> PostAsync(Guid id, [FromBody] Dependent dependent)
+        public async Task<IActionResult> PostAsync(Guid id, [FromBody] NewDependent dependent)
         {
             try
             {
                 var response = await _employeeService.AddDependentAsync(id, dependent);
-                return Ok(response);
+                return StatusCode((int)response.StatusCode, response);
             }
             catch (Exception ex)
             {

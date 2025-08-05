@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mapster" Version="7.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BenefitsService.Domain\BenefitsService.Domain.csproj" />
   </ItemGroup>
 

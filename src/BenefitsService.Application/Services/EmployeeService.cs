@@ -3,8 +3,6 @@ using BenefitsService.Application.Interfaces;
 using BenefitsService.Domain.Aggregates;
 using Entities = BenefitsService.Domain.Entities;
 using BenefitsService.Domain.Interfaces;
-using Mapster;
-using MapsterMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +28,6 @@ namespace BenefitsService.Application.Services
             }
             
             var employee = employeeEntity.ToFullDto();
-            var dependents = employeeEntity.Dependents.ToList().Select(dependent => dependent.ToDto());
-            employee.Dependents = [.. dependents];
             var response = new ApiResponse<Employee>
             {
                 Data = employee
@@ -54,7 +50,7 @@ namespace BenefitsService.Application.Services
             return response;
         }
 
-        public async Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, Dependent dependent)
+        public async Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, NewDependent dependent)
         {
             var employeeEntity = await _dataRepository.GetEmployeeWithDependentsAsync(employeeId);
             if (employeeEntity == null)
@@ -62,6 +58,7 @@ namespace BenefitsService.Application.Services
                 return new NotFoundApiResponse<Employee>();
             }
 
+            dependent.Relationship = dependent.Relationship.Replace(" ", string.Empty);
             if (!Enum.TryParse<Relationship>(dependent.Relationship, out var relationship))
             {
                 return new BadRequestApiResponse<Employee>

@@ -12,6 +12,6 @@ namespace BenefitsService.Application.Interfaces
     {
         Task<ApiResponse<IEnumerable<Employee>>> GetEmployeesAsync(int? pageSize, int? offset);
         Task<ApiResponse<Employee>> GetEmployeeByIdAsync(Guid id);
-        Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, Dependent dependent);
+        Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, NewDependent dependent);
     }
 }

@@ -11,8 +11,6 @@ namespace BenefitsService.Domain.Aggregates
 {
     public class EmployeeAggregate : RootEntity
     {
-        public const string SpouseDependentName = "Spouse";
-        public const string DomesticPartnerDependentName = "Domestic Partner";
         public const int BaseBenefitsDeduction = 1000;
         public const int BaseDependentDeduction = 600;
         public const int OlderDependentDeductionMinimumAge = 50;
@@ -28,8 +26,8 @@ namespace BenefitsService.Domain.Aggregates
 
         public override (bool Valid, string Error) ValidateEntity()
         {
-            var partnerDependents = Dependents.Where(dependent => Enum.GetName(dependent.Relationship) == 
-                SpouseDependentName || Enum.GetName(dependent.Relationship) == DomesticPartnerDependentName);
+            var partnerDependents = Dependents.Where(dependent => dependent.Relationship == Relationship.Spouse || 
+                dependent.Relationship == Relationship.DomesticPartner);
             if (partnerDependents.Count() > 1)
             {
                 return (false, "Employees can only have one spouse OR one domestic partner");

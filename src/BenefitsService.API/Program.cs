@@ -4,15 +4,12 @@ using BenefitsService.Application.Services;
 using BenefitsService.Domain.Interfaces;
 using BenefitsService.Infrastructure;
 using BenefitsService.Infrastructure.Repositories;
-using Mapster;
-using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton(MappingConfig.GetMappings());
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeAggregateRepository, EmployeeAggregateRepository>();
 builder.Services.AddScoped<IDataRepository, EFDataRepository>();

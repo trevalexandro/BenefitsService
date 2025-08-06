@@ -29,7 +29,8 @@ The solution is organized into the following projects:
     +---BenefitsService.Domain         # Core domain logic/business rules
                                          (e.g., employee entities, benefit deduction rules, salary calculations).
     |   +---Aggregates                 # Key entry point for entity with business logic & dependent entities.
-    |   +---Entities                   # Core domain entities that don't warrant an aggregate, also includes dependent entities.
+    |   +---Entities                   # Core domain entities that don't warrant an aggregate,
+                                         also includes dependent entities.
     |   +---Enums                      # Enums for less dynamic data.
     |   +---Interfaces                 # Core domain interfaces that can be implemented by external consumers.
     \---BenefitsService.Infrastructure # Third party infrastructure such as ORM & repository implementations.
@@ -76,7 +77,7 @@ The tests are written using xUnit and Moq.
 
 To run tests:
 ```
-cd BenefitsService.Tests
+cd BenefitsService/src/BenefitsService.Tests
 dotnet test
 ```
 <br />

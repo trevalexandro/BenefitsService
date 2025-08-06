@@ -77,7 +77,7 @@ The tests are written using xUnit and Moq.
 
 To run tests:
 ```
-cd BenefitsService.Tests
+cd BenefitsService/src/BenefitsService.Tests
 dotnet test
 ```
 <br />

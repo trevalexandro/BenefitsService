@@ -16,6 +16,7 @@ The service is built using **Domain-Driven Design (DDD)** principles and uses **
 
 The solution is organized into the following projects:
 
+```
 \---src
     +---BenefitsService.API # Entry point for the web API. Hosts all REST endpoints and handles HTTP concerns.
     |   +---Controllers # Controllers to handle routing of HTTP requests & returning responses.
@@ -33,6 +34,7 @@ The solution is organized into the following projects:
     \---BenefitsService.Infrastructure # Third party infrastructure such as ORM & repository implementations.
         +---Migrations # Code-first migrations for ORM implementation.
         \---Repositories # Data access implementations using domain entities.
+```
 
 
 ---

@@ -31,7 +31,9 @@ The solution is organized into the following projects:
 - Git
 
 > Note: No database setup or migrations are necessary. The SQLite database files are included in the repository.
+
 <br />
+
 ### Running the API
 
 > 1. Clone the repository:
@@ -46,9 +48,12 @@ cd BenefitsService/src/BenefitsService.API
 
 > 3. Open your browser and navigate to:
 
-https://localhost:7204/swagger to explore and test the API using Swagger UI.
+https://localhost:7204/swagger - to explore and test the API using Swagger UI.
+
 <br />
+
 🧪 Running Tests
+
 Unit tests are located in the BenefitsService.Tests project.
 
 The tests are written using xUnit and Moq.
@@ -59,6 +64,7 @@ cd BenefitsService.Tests
 dotnet test
 ```
 <br />
+
 🔍 Technologies Used
 
 - **.NET 9**
@@ -70,7 +76,9 @@ dotnet test
 - **xUnit + Moq (for testing)**
 
 - **Domain-Driven Design (DDD)**
+
 <br />
+
 📂 Example Endpoints
 
 | Endpoint | Method | Descrption |

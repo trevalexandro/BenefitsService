@@ -34,6 +34,15 @@ namespace BenefitsService.Application.Extensions
             return dto;
         }
 
+        public static EmployeeAggregate ToEntity(this EmployeeUpdate dto, EmployeeAggregate existingEmployee)
+        {
+            existingEmployee.FirstName = dto.FirstName ?? existingEmployee.FirstName;
+            existingEmployee.LastName = dto.LastName ?? existingEmployee.LastName;
+            existingEmployee.DateOfBirth = dto.DateOfBirth ?? existingEmployee.DateOfBirth;
+            existingEmployee.AnnualGrossSalary = dto.AnnualGrossSalary ?? existingEmployee.AnnualGrossSalary;
+            return existingEmployee;
+        }
+
         public static EmployeeAggregate ToEntity(this Employee dto)
         {
             return new EmployeeAggregate

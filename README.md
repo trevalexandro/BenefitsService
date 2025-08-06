@@ -27,28 +27,27 @@ The solution is organized into the following projects:
 
 ### Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/)
+- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - Git
 
 > Note: No database setup or migrations are necessary. The SQLite database files are included in the repository.
-
+<br />
 ### Running the API
 
-1. Clone the repository:
+> 1. Clone the repository:
 ```
 git clone https://github.com/your-org/BenefitsService.git
 cd BenefitsService/src/BenefitsService.API
 ```
 
-2. Run the API:
+> 2. Run the API:
 
 `dotnet run`
 
-3. Open your browser and navigate to:
+> 3. Open your browser and navigate to:
 
 https://localhost:7204/swagger to explore and test the API using Swagger UI.
-
-
+<br />
 🧪 Running Tests
 Unit tests are located in the BenefitsService.Tests project.
 
@@ -59,27 +58,24 @@ To run tests:
 cd BenefitsService.Tests
 dotnet test
 ```
-
-
+<br />
 🔍 Technologies Used
 
-.NET 9
+- **.NET 9**
 
-Entity Framework Core (SQLite provider)
+- **Entity Framework Core (SQLite provider)**
 
-Swagger/Swashbuckle
+- **Swagger/Swashbuckle**
 
-xUnit + Moq (for testing)
+- **xUnit + Moq (for testing)**
 
-Domain-Driven Design (DDD)
-
-
+- **Domain-Driven Design (DDD)**
+<br />
 📂 Example Endpoints
 
-Endpoint	Method	Description
-
-/api/v1/employees	GET	Get list of employees
-
-/api/v1/employees/{id}	GET	Get dependents, deductions, and net pay for a specific employee
-
-/api/v1/employees/{id}/dependents	POST	Add a new dependent
+| Endpoint | Method | Descrption |
+| --- | --- | --- |
+| `/api/v1/employees` | GET | Get list of employees |
+| `/api/v1/employees/{id}` | GET | Get dependents, deductions, and net pay for a specific employee |
+| `/api/v1/employees/{id}` | PUT | Update basic employee information |
+| `/api/v1/employees/{id}/dependents` | POST | Add a new dependent |

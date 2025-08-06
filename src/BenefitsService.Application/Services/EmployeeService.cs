@@ -14,14 +14,14 @@ using BenefitsService.Domain.Enums;
 
 namespace BenefitsService.Application.Services
 {
-    public class EmployeeService(IEmployeeAggregateRepository _dataRepository) : IEmployeeService
+    public class EmployeeService(IEmployeeAggregateRepository _employeeAggregateRepository) : IEmployeeService
     {
         private const int DefaultPageSize = 10;
         private const int DefaultOffset = 0;
 
         public async Task<ApiResponse<Employee>> GetEmployeeByIdAsync(Guid id)
         {
-            var employeeEntity = await _dataRepository.GetEmployeeWithDependentsAsync(id);
+            var employeeEntity = await _employeeAggregateRepository.GetEmployeeWithDependentsAsync(id);
             if (employeeEntity == null)
             {
                 return new NotFoundApiResponse<Employee>();
@@ -38,9 +38,9 @@ namespace BenefitsService.Application.Services
 
         public async Task<ApiResponse<IEnumerable<Employee>>> GetEmployeesAsync(int? pageSize, int? offset)
         {
-            int totalCount = await _dataRepository.CountAsync<EmployeeAggregate>();
-            var employeeEntities = await _dataRepository.GetAllAsync<EmployeeAggregate>(pageSize ?? DefaultPageSize,
-                offset ?? DefaultOffset);
+            int totalCount = await _employeeAggregateRepository.CountAsync<EmployeeAggregate>();
+            var employeeEntities = await _employeeAggregateRepository.GetAllAsync<EmployeeAggregate>(
+                pageSize ?? DefaultPageSize, offset ?? DefaultOffset);
             var employeeDtos = employeeEntities.Select(entity => entity.ToDtoWithoutNetPay());
             var response = new ApiResponse<IEnumerable<Employee>>
             {
@@ -50,9 +50,26 @@ namespace BenefitsService.Application.Services
             return response;
         }
 
+        public async Task<ApiResponse<Employee>> UpdateEmployeeAsync(Guid id, EmployeeUpdate employee)
+        {
+            var employeeEntity = await _employeeAggregateRepository.GetEmployeeWithDependentsAsync(id);
+            if (employeeEntity == null)
+            {
+                return new NotFoundApiResponse<Employee>();
+            }
+
+            var updatedEmployeeEntity = employee.ToEntity(employeeEntity);
+            await _employeeAggregateRepository.SaveChangesAsync(updatedEmployeeEntity);
+            var employeeDto = updatedEmployeeEntity.ToDtoWithoutNetPay();
+            return new ApiResponse<Employee>
+            {
+                Data = employeeDto
+            };
+        }
+
         public async Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, NewDependent dependent)
         {
-            var employeeEntity = await _dataRepository.GetEmployeeWithDependentsAsync(employeeId);
+            var employeeEntity = await _employeeAggregateRepository.GetEmployeeWithDependentsAsync(employeeId);
             if (employeeEntity == null)
             {
                 return new NotFoundApiResponse<Employee>();
@@ -78,13 +95,12 @@ namespace BenefitsService.Application.Services
                 };
             }
 
-            await _dataRepository.SaveChangesAsync(employeeEntity);
+            await _employeeAggregateRepository.SaveChangesAsync(employeeEntity);
             var result = employeeEntity.ToFullDto();
             return new ApiResponse<Employee>
             {
                 Data = result,
-                Success = true,
-                StatusCode = HttpStatusCode.OK
+                StatusCode = HttpStatusCode.Created
             };
         }
     }

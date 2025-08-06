@@ -1,6 +1,7 @@
 ﻿using BenefitsService.Domain.Entities;
 using BenefitsService.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,15 +49,9 @@ namespace BenefitsService.Infrastructure.Repositories
                 return result.Entity.Id;
             }
 
-            var existingEntity = await dbSet.FindAsync(entity.Id);
-            if (existingEntity == null)
-            {
-                return null;
-            }
-
-            _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
-            return existingEntity.Id;
+            return entity.Id;
         }
 
         public (bool Valid, string Error) ValidateEntity<TEntity>(TEntity entity) where TEntity : RootEntity

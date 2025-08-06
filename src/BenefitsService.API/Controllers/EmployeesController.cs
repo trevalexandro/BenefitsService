@@ -1,5 +1,6 @@
 ﻿using BenefitsService.Application.DTO;
 using BenefitsService.Application.Interfaces;
+using BenefitsService.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +57,23 @@ namespace BenefitsService.API.Controllers
                 Console.WriteLine(ex);
                 return StatusCode((int)HttpStatusCode.InternalServerError, 
                     new InternalServerErrorApiResponse<Employee>());
+            }
+        }
+
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody] EmployeeUpdate employee)
+        {
+            try
+            {
+                var response = await _employeeService.UpdateEmployeeAsync(id, employee);
+                return StatusCode((int)response.StatusCode, response);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    new InternalServerErrorApiResponse<Employee>());
+
             }
         }
     }

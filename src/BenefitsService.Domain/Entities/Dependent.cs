@@ -1,13 +1,14 @@
 ﻿using BenefitsService.Domain.Aggregates;
 using BenefitsService.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BenefitsService.Domain.Entities
 {
+    /// <summary>
+    /// Represents a dependent associated with an employee, including personal details and their relationship to the
+    /// employee.
+    /// </summary>
+    /// <remarks>This class is used to model dependents in the context of an employee aggregate. Each
+    /// dependent has required properties  such as their name, age, and relationship to the employee.</remarks>
     public class Dependent : ChildEntity<EmployeeAggregate>
     {
         public required string FirstName { get; set; }

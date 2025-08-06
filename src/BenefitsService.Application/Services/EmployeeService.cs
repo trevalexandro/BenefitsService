@@ -1,24 +1,34 @@
 ﻿using BenefitsService.Application.DTO;
 using BenefitsService.Application.Interfaces;
 using BenefitsService.Domain.Aggregates;
-using Entities = BenefitsService.Domain.Entities;
 using BenefitsService.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using BenefitsService.Application.Extensions;
 using BenefitsService.Domain.Enums;
 
 namespace BenefitsService.Application.Services
 {
+    /// <summary>
+    /// Provides operations for managing employees and their dependents, including retrieval, updates, and additions.
+    /// </summary>
+    /// <remarks>This service interacts with an employee aggregate repository to perform operations such as
+    /// fetching employee data, updating employee information, and adding dependents. It returns API responses that
+    /// encapsulate the results of these operations.</remarks>
+    /// <param name="_employeeAggregateRepository">Domain interface for data access operations of the core
+    /// domain entities.
+    /// </param>
     public class EmployeeService(IEmployeeAggregateRepository _employeeAggregateRepository) : IEmployeeService
     {
         private const int DefaultPageSize = 10;
         private const int DefaultOffset = 0;
 
+        /// <summary>
+        /// Gets an employee by their ID.
+        /// </summary>
+        /// <param name="id">ID of the employee.</param>
+        /// <returns>
+        /// An API response object containing an employee DTO with other metadata such as HTTP response code.
+        /// </returns>
         public async Task<ApiResponse<Employee>> GetEmployeeByIdAsync(Guid id)
         {
             var employeeEntity = await _employeeAggregateRepository.GetEmployeeWithDependentsAsync(id);
@@ -36,6 +46,15 @@ namespace BenefitsService.Application.Services
             return response;
         }
 
+        /// <summary>
+        /// Gets a paginated list of employees.
+        /// </summary>
+        /// <param name="pageSize">Number of records to get in a specific query.</param>
+        /// <param name="offset">The zero-based index of the first entity to retrieve. Must be non-negative.</param>
+        /// <returns>
+        /// An API response object containing an enumerable collection of employee DTOs with other
+        /// metadata such as total count and HTTP response code.
+        /// </returns>
         public async Task<ApiResponse<IEnumerable<Employee>>> GetEmployeesAsync(int? pageSize, int? offset)
         {
             int totalCount = await _employeeAggregateRepository.CountAsync<EmployeeAggregate>();
@@ -50,6 +69,15 @@ namespace BenefitsService.Application.Services
             return response;
         }
 
+        /// <summary>
+        /// Updates an existing employee's information.
+        /// </summary>
+        /// <param name="id">ID of the employee.</param>
+        /// <param name="employee">Updated information for the employee.</param>
+        /// <returns>
+        /// An API response object containing an employee DTO with other information detailing if the
+        /// addition was successful, and why not if it was not.
+        /// </returns>
         public async Task<ApiResponse<Employee>> UpdateEmployeeAsync(Guid id, EmployeeUpdate employee)
         {
             var employeeEntity = await _employeeAggregateRepository.GetEmployeeWithDependentsAsync(id);
@@ -67,6 +95,15 @@ namespace BenefitsService.Application.Services
             };
         }
 
+        /// <summary>
+        /// Adds a new dependent to an employee's record.
+        /// </summary>
+        /// <param name="employeeId">ID of the employee.</param>
+        /// <param name="dependent">Information about the new dependent.</param>
+        /// <returns>
+        /// An API response object containing an employee DTO with other information detailing if the
+        /// addition was successful, and why not if it was not.
+        /// </returns>
         public async Task<ApiResponse<Employee>> AddDependentAsync(Guid employeeId, NewDependent dependent)
         {
             var employeeEntity = await _employeeAggregateRepository.GetEmployeeWithDependentsAsync(employeeId);

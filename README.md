@@ -18,22 +18,23 @@ The solution is organized into the following projects:
 
 ```
 \---src
-    +---BenefitsService.API # Entry point for the web API. Hosts all REST endpoints and handles HTTP concerns.
-    |   +---Controllers # Controllers to handle routing of HTTP requests & returning responses.
-    |   \---Properties # Configure launch settings for running application.
-    +---BenefitsService.Application # Responsible for coordinating domain operations & invoking services/repositories.
-    |   +---DTO # POCO objects for transferring data between the various projects.
-    |   +---Extensions # Extension helper methods, source of mapping methods.
-    |   +---Interfaces # Interfaces for application services.
-    |   \---Services # Services that orchestrate request fulfillment.
-    +---BenefitsService.Domain # Core domain logic/business rules (e.g., employee entities, benefit deduction rules, salary calculations).
-    |   +---Aggregates # Key entry point for entity with business logic & dependent entities.
-    |   +---Entities # Core domain entities that don't warrant an aggregate, also includes dependent entities.
-    |   +---Enums # Enums for less dynamic data.
-    |   +---Interfaces # Core domain interfaces that can be implemented by external consumers.
+    +---BenefitsService.API            # Entry point for the web API. Hosts all REST endpoints and handles HTTP concerns.
+    |   +---Controllers                # Controllers to handle routing of HTTP requests & returning responses.
+    |   \---Properties                 # Configure launch settings for running application.
+    +---BenefitsService.Application    # Responsible for coordinating domain operations & invoking services/repositories.
+    |   +---DTO                        # POCO objects for transferring data between the various projects.
+    |   +---Extensions                 # Extension helper methods, source of mapping methods.
+    |   +---Interfaces                 # Interfaces for application services.
+    |   \---Services                   # Services that orchestrate request fulfillment.
+    +---BenefitsService.Domain         # Core domain logic/business rules
+                                         (e.g., employee entities, benefit deduction rules, salary calculations).
+    |   +---Aggregates                 # Key entry point for entity with business logic & dependent entities.
+    |   +---Entities                   # Core domain entities that don't warrant an aggregate, also includes dependent entities.
+    |   +---Enums                      # Enums for less dynamic data.
+    |   +---Interfaces                 # Core domain interfaces that can be implemented by external consumers.
     \---BenefitsService.Infrastructure # Third party infrastructure such as ORM & repository implementations.
-        +---Migrations # Code-first migrations for ORM implementation.
-        \---Repositories # Data access implementations using domain entities.
+        +---Migrations                 # Code-first migrations for ORM implementation.
+        \---Repositories               # Data access implementations using domain entities.
 ```
 
 

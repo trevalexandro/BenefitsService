@@ -31,7 +31,6 @@ The solution is organized into the following projects:
 - Git
 
 > Note: No database setup or migrations are necessary. The SQLite database files are included in the repository.
-
 <br />
 
 ### Running the API
@@ -49,7 +48,6 @@ cd BenefitsService/src/BenefitsService.API
 > 3. Open your browser and navigate to:
 
 https://localhost:7204/swagger - to explore and test the API using Swagger UI.
-
 <br />
 
 🧪 Running Tests
@@ -76,7 +74,6 @@ dotnet test
 - **xUnit + Moq (for testing)**
 
 - **Domain-Driven Design (DDD)**
-
 <br />
 
 📂 Example Endpoints

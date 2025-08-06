@@ -16,10 +16,24 @@ The service is built using **Domain-Driven Design (DDD)** principles and uses **
 
 The solution is organized into the following projects:
 
-- **BenefitsService.API** – Entry point for the web API. Hosts all REST endpoints and handles HTTP concerns.
-- **BenefitsService.Application** – Application layer responsible for coordinating domain operations and invoking services/repositories.
-- **BenefitsService.Domain** – Core domain logic and business rules (e.g., employee entities, benefit deduction rules, salary calculations).
-- **BenefitsService.Infrastructure** – Infrastructure-specific code such as EF Core DbContext, repository implementations, and data access.
+\---src
+    +---BenefitsService.API # Entry point for the web API. Hosts all REST endpoints and handles HTTP concerns.
+    |   +---Controllers # Controllers to handle routing of HTTP requests & returning responses.
+    |   \---Properties # Configure launch settings for running application.
+    +---BenefitsService.Application # Responsible for coordinating domain operations & invoking services/repositories.
+    |   +---DTO # POCO objects for transferring data between the various projects.
+    |   +---Extensions # Extension helper methods, source of mapping methods.
+    |   +---Interfaces # Interfaces for application services.
+    |   \---Services # Services that orchestrate request fulfillment.
+    +---BenefitsService.Domain # Core domain logic/business rules (e.g., employee entities, benefit deduction rules, salary calculations).
+    |   +---Aggregates # Key entry point for entity with business logic & dependent entities.
+    |   +---Entities # Core domain entities that don't warrant an aggregate, also includes dependent entities.
+    |   +---Enums # Enums for less dynamic data.
+    |   +---Interfaces # Core domain interfaces that can be implemented by external consumers.
+    \---BenefitsService.Infrastructure # Third party infrastructure such as ORM & repository implementations.
+        +---Migrations # Code-first migrations for ORM implementation.
+        \---Repositories # Data access implementations using domain entities.
+
 
 ---
 
@@ -48,6 +62,7 @@ cd BenefitsService/src/BenefitsService.API
 > 3. Open your browser and navigate to:
 
 https://localhost:7204/swagger - to explore and test the API using Swagger UI.
+<br />
 <br />
 
 🧪 Running Tests

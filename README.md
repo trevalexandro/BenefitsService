@@ -45,7 +45,7 @@ The solution is organized into the following projects:
 
 ### Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) is **required** in order to run the service
 - Git
 
 > Note: No database setup or migrations are necessary. The SQLite database files are included in the repository.
